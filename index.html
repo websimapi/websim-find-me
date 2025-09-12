@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Me!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Find Me!</h1>
+            <p>Upload a photo, and I'll turn it into a game.</p>
+        </header>
+        
+        <main>
+            <div id="upload-screen" class="screen active">
+                <div class="upload-area">
+                    <img id="image-preview" src="#" alt="Your image preview" class="hidden">
+                    <label for="image-upload" id="upload-label">
+                        <img src="upload-icon.png" alt="Upload Icon" width="50">
+                        <span>Tap to upload a photo</span>
+                    </label>
+                    <input type="file" id="image-upload" accept="image/*" capture="user">
+                </div>
+                <button id="generate-button" disabled>Create Game</button>
+            </div>
+
+            <div id="loading-screen" class="screen">
+                <div class="loader"></div>
+                <p id="loading-message">Analyzing your image...</p>
+            </div>
+
+            <div id="game-screen" class="screen">
+                <h2 id="game-prompt"></h2>
+                <div id="game-image-container">
+                     <!-- Game image will be inserted here by JS -->
+                </div>
+            </div>
+
+            <div id="result-screen" class="screen">
+                <h2 id="result-message"></h2>
+                <button id="play-again-button">Play Again</button>
+            </div>
+        </main>
+    </div>
+    
+    <script type="importmap">
+    {
+      "imports": {
+        "canvas-confetti": "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.module.mjs"
+      }
+    }
+    </script>
+    <script src="main.js" type="module"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
