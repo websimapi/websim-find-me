@@ -56,16 +56,16 @@ async function generateGame() {
 
     try {
         // Step 1: Analyze the image
-        appState.ui.loadingMessage.innerText = 'Analyzing your image...';
+        appState.ui.loadingMessage.innerText = 'Analyzing your photo... (Step 1/3)';
         const analysis = await analyzeImage(appState.game.imageDataUrl);
         appState.game.subjectDescription = analysis.subject;
 
         // Step 2: Generate the game image
-        appState.ui.loadingMessage.innerText = 'Creating a hidden world...';
+        appState.ui.loadingMessage.innerText = 'Creating a hidden world... (Step 2/3)';
         const gameImageResult = await createGameImage(analysis.subject, analysis.scene);
 
         // Step 3: Find the hidden subject in the new image
-        appState.ui.loadingMessage.innerText = 'Hiding the treasure...';
+        appState.ui.loadingMessage.innerText = 'Hiding the treasure... (Step 3/3)';
         appState.game.targetArea = await findSubjectInImage(gameImageResult.url, analysis.subject);
 
         // Step 4: Setup and show the game screen
@@ -100,7 +100,7 @@ Respond with JSON, following this schema:
 }
 
 async function createGameImage(subject, scene) {
-    const prompt = `Create a very dense, crowded, and chaotic 'Where's Waldo' style cartoon illustration based on the theme of "${scene}". The style should be vibrant, detailed, and full of many different characters and objects. Somewhere hidden within this chaotic scene, include a small, subtly placed "${subject}". Do not make the hidden subject obvious.`;
+    const prompt = `Create a very dense, crowded, and chaotic 'Where's Waldo' style cartoon illustration based on the theme of "${scene}". The style should be vibrant, detailed, and full of many different characters and objects. Somewhere hidden within this chaotic scene, include a small, subtly placed "${subject}". Do not make the hidden subject obvious. The image should be fun and colorful.`;
     return await websim.imageGen({ prompt, aspect_ratio: "4:3" });
 }
 
@@ -110,9 +110,10 @@ async function findSubjectInImage(imageUrl, subject) {
             role: 'user',
             content: [{
                 type: 'text',
-                text: `Find the "${subject}" in this image. Provide its bounding box as a JSON object with coordinates as percentages from the top-left corner.
-The schema is: { "x": number, "y": number, "width": number, "height": number }.
-If you cannot find it, make your best guess for a plausible location.`
+                text: `You are an expert object locator. Find the exact bounding box for the "${subject}" in this image.
+Respond ONLY with a valid JSON object containing the coordinates as percentages from the top-left corner.
+The required JSON schema is: { "x": number, "y": number, "width": number, "height": number }.
+Do not include any other text, explanations, or markdown formatting. If you cannot find the object, make your best guess.`
             }, {
                 type: 'image_url',
                 image_url: { url: imageUrl },
@@ -178,4 +179,3 @@ appState.buttons.playAgain.addEventListener('click', resetGame);
 
 // Initial state
 switchScreen('upload');
-
